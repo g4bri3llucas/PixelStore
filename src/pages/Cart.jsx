@@ -5,10 +5,15 @@ function Cart() {
   const { cart, removeFromCart, total } = useContext(CartContext)
 
   return (
-    <div style={{ padding: "40px" }}>
+    <div style={{ padding: "40px", backgroundColor: "#020617", minHeight: "100vh" }}>
       <h1>Carrinho</h1>
 
-      {cart.length === 0 && <p>Seu carrinho está vazio</p>}
+      {cart.length === 0 && (
+  <div className="empty-cart">
+    <p>Seu carrinho está vazio.</p>
+    <Link to="/" className="back-button">Explorar Games</Link>
+  </div>
+)}
 
       {cart.map(item => (
         <div key={item.id} style={{ marginBottom: "20px" }}>

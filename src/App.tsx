@@ -1,21 +1,29 @@
-import { BrowserRouter, Routes, Route } from "react-router-dom"
-import Home from "./pages/Home"
-import GameDetails from "./pages/GameDetails"
-import Cart from "./pages/Cart"
-import Navbar from "./components/Navbar"
+import { useState } from "react";
+import { CartProvider } from "./context/CartContext"; 
+import Navbar from "./components/Navbar/Navbar";
+import Sidebar from "./components/Sidebar/Sidebar";
+import Home from "./pages/Home";
+import "./App.css";
 
 function App() {
-  return (
-    <BrowserRouter>
-      <Navbar />
+  const [isMenuOpen, setIsMenuOpen] = useState<boolean>(false);
 
-      <Routes>
-        <Route path="/" element={<Home />} />
-        <Route path="/game/:id" element={<GameDetails />} />
-        <Route path="/cart" element={<Cart />} />
-      </Routes>
-    </BrowserRouter>
-  )
+  const toggleMenu = () => {
+    setIsMenuOpen(!isMenuOpen);
+  };
+
+  return (
+    // Removido o <BrowserRouter> daqui
+    <CartProvider>
+      <div className="app-container">
+        <Navbar toggleMenu={toggleMenu} isOpen={isMenuOpen} />
+        <Sidebar isOpen={isMenuOpen} toggleMenu={toggleMenu} />
+        <main>
+          <Home />
+        </main>
+      </div>
+    </CartProvider>
+  );
 }
 
-export default App
+export default App;
