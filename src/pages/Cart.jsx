@@ -1,5 +1,10 @@
 function Cart() {
-  return <h1>Carrinho</h1>
+  return (
+    <div style={{ padding: "40px" }}>
+      <h1>Carrinho</h1>
+      <p>Em breve...</p>
+    </div>
+  )
 }
 
 export default Cart

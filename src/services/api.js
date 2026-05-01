@@ -12,3 +12,10 @@ export const getGames = async () => {
   )
   return response.data.results
 }
+
+export const getGameById = async (id) => {
+  const response = await api.get(
+    `/games/${id}?key=${API_KEY}`
+  )
+  return response.data
+}

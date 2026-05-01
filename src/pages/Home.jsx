@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react"
 import GameCard from "../components/GameCard"
+import Banner from "../components/Banner"
 import { getGames } from "../services/api"
 
 function Home() {
@@ -24,7 +25,9 @@ function Home() {
 
   return (
     <div style={{ padding: "40px" }}>
-      <h1>PixelStore</h1>
+      <Banner game={games[0]} />
+
+      <h2>Jogos populares</h2>
 
       <div style={{ display: "flex", gap: "20px", flexWrap: "wrap" }}>
         {games.map(game => (
