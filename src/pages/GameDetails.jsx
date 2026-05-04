@@ -1,36 +1,59 @@
-import { useEffect, useState } from "react"
-import { useParams } from "react-router-dom"
-import { getGameById } from "../services/api"
+import { useEffect, useState } from "react";
+import { useParams } from "react-router-dom";
+import "./GameDetails.css";
 
 function GameDetails() {
-  const { id } = useParams()
-  const [game, setGame] = useState(null)
+  const { id } = useParams();
+  const [game, setGame] = useState(null);
+  const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    const fetchGame = async () => {
-      const data = await getGameById(id)
+    const fetchGameDetails = async () => {
+      try {
+        const response = await fetch(
+          `https://api.rawg.io/api/games/${id}?key=SUA_API_KEY_AQUI`
+        );
+        const data = await response.json();
+        setGame(data);
+      } catch (error) {
+        console.error("Error fetching game details:", error);
+      } finally {
+        setLoading(false);
+      }
+    };
 
-      setGame({
-        title: data.name,
-        description: data.description_raw,
-        image: data.background_image,
-        rating: data.rating
-      })
-    }
+    fetchGameDetails();
+  }, [id]);
 
-    fetchGame()
-  }, [id])
-
-  if (!game) return <p style={{ padding: "40px" }}>Carregando...</p>
+  if (loading) return <div className="loading">Loading...</div>;
+  if (!game) return <div className="error">Game not found.</div>;
 
   return (
-    <div style={{ padding: "40px" }}>
-      <img src={game.image} style={{ width: "100%" }} />
-      <h1>{game.title}</h1>
-      <p>⭐ {game.rating}</p>
-      <p>{game.description}</p>
+    <div className="game-details">
+      <div className="game-header" style={{ backgroundImage: `url(${game.background_image})` }}>
+        <div className="header-content">
+          <h1>{game.name}</h1>
+        </div>
+      </div>
+      
+      <div className="game-content">
+        <div className="main-info">
+          <p dangerouslySetInnerHTML={{ __html: game.description }}></p>
+        </div>
+        
+        <div className="side-info">
+          <div className="info-box">
+            <span>Rating</span>
+            <strong>{game.rating} / 5</strong>
+          </div>
+          <div className="info-box">
+            <span>Released</span>
+            <strong>{game.released}</strong>
+          </div>
+        </div>
+      </div>
     </div>
-  )
+  );
 }
 
-export default GameDetails
+export default GameDetails;
