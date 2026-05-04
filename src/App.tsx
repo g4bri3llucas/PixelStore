@@ -5,7 +5,7 @@ import { CartProvider } from "./context/CartContext";
 import Navbar from "./components/Navbar/Navbar";
 import Sidebar from "./components/Sidebar/Sidebar";
 import Home from "./pages/Home";
-import GameDetails from "./pages/GameDetails/GameDetails";
+import GameDetails from "./pages/GameDetails";
 
 import "./App.css";
 
