@@ -1,6 +1,5 @@
-import { FiGrid, FiTag, FiGift, FiMonitor, FiSmartphone, FiChevronRight } from "react-icons/fi";
-import { SiPlaystation, SiXbox } from "react-icons/si";
-import { BsNintendoSwitch } from "react-icons/bs";
+import { FiGrid, FiTag, FiGift, FiMonitor, FiSmartphone, FiChevronRight, FiTv } from "react-icons/fi";
+import { BsNintendoSwitch, BsPlaystation, BsXbox } from "react-icons/bs";
 import "./Sidebar.css";
 
 interface SidebarProps {
@@ -16,8 +15,8 @@ const mainItems = [
 
 const platformItems = [
   { icon: <FiMonitor size={16} />, label: "PC / Windows", arrow: true },
-  { icon: <SiPlaystation size={16} />, label: "PlayStation", arrow: true },
-  { icon: <SiXbox size={16} />, label: "Xbox", arrow: true },
+  { icon: <BsPlaystation size={16} />, label: "PlayStation", arrow: true },
+  { icon: <BsXbox size={16} />, label: "Xbox", arrow: true },
   { icon: <BsNintendoSwitch size={16} />, label: "Nintendo", arrow: true },
   { icon: <FiSmartphone size={16} />, label: "Mobile", arrow: true },
 ];

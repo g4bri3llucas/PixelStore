@@ -1,12 +1,10 @@
 import { useState } from "react";
 import { Routes, Route } from "react-router-dom";
-import { CartProvider } from "./context/CartContext"; 
-
+import { CartProvider } from "./context/CartContext";
 import Navbar from "./components/Navbar/Navbar";
 import Sidebar from "./components/Sidebar/Sidebar";
 import Home from "./pages/Home";
-import GameDetails from "./pages/GameDetails";
-
+import GameDetail from "./pages/GameDetail";
 import "./App.css";
 
 function App() {
@@ -18,11 +16,10 @@ function App() {
       <div className="app-container">
         <Navbar toggleMenu={toggleMenu} isOpen={isMenuOpen} />
         <Sidebar isOpen={isMenuOpen} toggleMenu={toggleMenu} />
-        
         <main>
           <Routes>
             <Route path="/" element={<Home />} />
-            <Route path="/game/:id" element={<GameDetails />} />
+            <Route path="/game/:id" element={<GameDetail />} />
           </Routes>
         </main>
       </div>
