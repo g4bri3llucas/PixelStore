@@ -1,46 +1,205 @@
-import { useEffect, useState } from "react";
+import { useEffect, useState, useCallback } from "react";
+import { FiRefreshCw, FiAlertCircle } from "react-icons/fi";
 import GameCard from "../components/GameCard/GameCard";
 import Banner from "../components/Banner/Banner";
-import { getGames } from "../services/api";
+import { SkeletonGrid } from "../components/SkeletonCard/SkeletonCard";
+import { getGames, getGenres, generatePrice, generateDiscount } from "../services/api";
+import "./Home.css";
+
+const ORDERINGS = [
+  { label: "Mais Populares", value: "-rating" },
+  { label: "Lançamentos", value: "-released" },
+  { label: "Melhor Avaliados", value: "-metacritic" },
+  { label: "A–Z", value: "name" },
+];
 
 function Home() {
   const [games, setGames] = useState([]);
+  const [genres, setGenres] = useState([]);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
+  const [activeGenre, setActiveGenre] = useState("");
+  const [activeOrdering, setActiveOrdering] = useState("-rating");
+  const [page, setPage] = useState(1);
+  const [loadingMore, setLoadingMore] = useState(false);
 
+  // Busca gêneros uma vez
   useEffect(() => {
-    const fetchGames = async () => {
-      try {
-        const data = await getGames();
-        const formatted = data.map(game => ({
-          id: game.id,
-          title: game.name,
-          price: Math.floor(Math.random() * 200) + 50,
-          image: game.background_image,
-          genre: game.genres?.map(g => g.name).join(", "),
-          rating: game.rating,
-        }));
-        setGames(formatted);
-      } catch (err) {
-        console.error("Erro na API PixelStore:", err);
-      }
-    };
-    fetchGames();
+    getGenres().then(setGenres).catch(() => {});
   }, []);
 
+  const fetchGames = useCallback(async (reset = true) => {
+    try {
+      reset ? setLoading(true) : setLoadingMore(true);
+      setError(null);
+
+      const currentPage = reset ? 1 : page + 1;
+      const currentYear = new Date().getFullYear();
+
+      const data = await getGames({
+        page: currentPage,
+        page_size: 20,
+        genres: activeGenre || undefined,
+        ordering: activeOrdering,
+      });
+
+      const formatted = data.map((g) => {
+        const discount = generateDiscount(g);
+        const releaseYear = g.released ? new Date(g.released).getFullYear() : 0;
+        return {
+          id: g.id,
+          title: g.name,
+          price: generatePrice(g),
+          image: g.background_image,
+          genre: g.genres?.map((x) => x.name).join(", "),
+          rating: g.rating,
+          discount,
+          isNew: releaseYear >= currentYear - 1,
+        };
+      });
+
+      if (reset) {
+        setGames(formatted);
+        setPage(1);
+      } else {
+        setGames((prev) => [...prev, ...formatted]);
+        setPage(currentPage);
+      }
+    } catch (err) {
+      setError(err?.message || "Erro ao carregar jogos. Verifique sua VITE_API_KEY.");
+    } finally {
+      setLoading(false);
+      setLoadingMore(false);
+    }
+  }, [activeGenre, activeOrdering, page]);
+
+  useEffect(() => {
+    fetchGames(true);
+  }, [activeGenre, activeOrdering]); // eslint-disable-line
+
+  const bannerGames = games.filter((g) => g.image).slice(0, 5);
+  const onSaleGames = games.filter((g) => g.discount);
+
   return (
-    <div className="home-content">
-      {games.length > 0 && <Banner games={games} />}
+    <div className="home">
+      {/* Banner */}
+      {loading
+        ? <div className="banner-skeleton" />
+        : <Banner games={bannerGames} />
+      }
 
-      <h2 style={{ color: "white", margin: "40px 0 20px" }}>Jogos Populares</h2>
+      {/* Filtros */}
+      <div className="home__filters">
+        <div className="home__genre-filters">
+          <button
+            className={`home__genre-btn ${activeGenre === "" ? "active" : ""}`}
+            onClick={() => setActiveGenre("")}
+          >
+            Todos
+          </button>
+          {genres.slice(0, 8).map((g) => (
+            <button
+              key={g.id}
+              className={`home__genre-btn ${activeGenre === g.slug ? "active" : ""}`}
+              onClick={() => setActiveGenre(g.slug)}
+            >
+              {g.name}
+            </button>
+          ))}
+        </div>
 
-      <div style={{
-        display: "grid",
-        gridTemplateColumns: "repeat(auto-fill, minmax(280px, 1fr))",
-        gap: "30px"
-      }}>
-        {games.map(game => (
-          <GameCard key={game.id} game={game} />
-        ))}
+        <select
+          className="home__ordering"
+          value={activeOrdering}
+          onChange={(e) => setActiveOrdering(e.target.value)}
+        >
+          {ORDERINGS.map((o) => (
+            <option key={o.value} value={o.value}>{o.label}</option>
+          ))}
+        </select>
       </div>
+
+      {/* Erro */}
+      {error && (
+        <div className="home__error">
+          <FiAlertCircle size={18} />
+          <span>{error}</span>
+          <button className="home__error-retry" onClick={() => fetchGames(true)}>
+            <FiRefreshCw size={14} /> Tentar novamente
+          </button>
+        </div>
+      )}
+
+      {/* Seção Em Oferta */}
+      {!loading && onSaleGames.length > 0 && (
+        <section className="home__section">
+          <div className="home__section-header">
+            <h2 className="home__section-title">🔥 Em Oferta</h2>
+            <span className="home__section-count">{onSaleGames.length} jogos</span>
+          </div>
+          <div className="games-grid">
+            {onSaleGames.slice(0, 4).map((game, i) => (
+              <GameCard
+                key={game.id}
+                game={game}
+                discount={game.discount}
+                isNew={game.isNew}
+                delay={i * 60}
+              />
+            ))}
+          </div>
+        </section>
+      )}
+
+      {/* Catálogo Principal */}
+      <section className="home__section">
+        <div className="home__section-header">
+          <h2 className="home__section-title">
+            {activeGenre
+              ? genres.find((g) => g.slug === activeGenre)?.name ?? "Jogos"
+              : "Catálogo Completo"}
+          </h2>
+          {!loading && (
+            <span className="home__section-count">{games.length} jogos</span>
+          )}
+        </div>
+
+        {loading ? (
+          <SkeletonGrid count={8} />
+        ) : games.length === 0 ? (
+          <div className="home__empty">
+            <span style={{ fontSize: "2.5rem" }}>🎮</span>
+            <p>Nenhum jogo encontrado para este filtro.</p>
+          </div>
+        ) : (
+          <>
+            <div className="games-grid">
+              {games.map((game, i) => (
+                <GameCard
+                  key={game.id}
+                  game={game}
+                  discount={game.discount}
+                  isNew={game.isNew}
+                  delay={i * 40}
+                />
+              ))}
+            </div>
+
+            <div className="home__load-more">
+              <button
+                className="home__load-more-btn"
+                onClick={() => fetchGames(false)}
+                disabled={loadingMore}
+              >
+                {loadingMore
+                  ? <><FiRefreshCw size={15} className="spin" /> Carregando...</>
+                  : "Carregar mais jogos"
+                }
+              </button>
+            </div>
+          </>
+        )}
+      </section>
     </div>
   );
 }
