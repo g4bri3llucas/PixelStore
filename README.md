@@ -1,74 +1,86 @@
-# React + TypeScript + Vite
+<div align="center">
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+# 🎮 PixelStore
 
-Currently, two official plugins are available:
+### E-commerce de games desenvolvido com React + TypeScript
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Oxc](https://oxc.rs)
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/)
+[![React](https://img.shields.io/badge/React-19-61dafb?style=flat-square&logo=react)](https://react.dev)
+[![TypeScript](https://img.shields.io/badge/TypeScript-5-3178c6?style=flat-square&logo=typescript)](https://typescriptlang.org)
+[![Vite](https://img.shields.io/badge/Vite-6-646cff?style=flat-square&logo=vite)](https://vitejs.dev)
+[![RAWG API](https://img.shields.io/badge/API-RAWG-f4901e?style=flat-square)](https://rawg.io/apidocs)
 
-## React Compiler
+</div>
 
-The React Compiler is not enabled on this template because of its impact on dev & build performances. To add it, see [this documentation](https://react.dev/learn/react-compiler/installation).
+---
 
-## Expanding the ESLint configuration
+## 📖 Sobre o Projeto
 
-If you are developing a production application, we recommend updating the configuration to enable type-aware lint rules:
+A **PixelStore** é uma plataforma de e-commerce para jogos digitais que consome dados reais da API RAWG. O projeto foi focado em aplicar conceitos avançados de React, como gerenciamento de estado global, otimização de chamadas de API e uma interface responsiva com tema dark moderno.
 
-```js
-export default defineConfig([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
+---
 
-      // Remove tseslint.configs.recommended and replace with this
-      tseslint.configs.recommendedTypeChecked,
-      // Alternatively, use this for stricter rules
-      tseslint.configs.strictTypeChecked,
-      // Optionally, add this for stylistic rules
-      tseslint.configs.stylisticTypeChecked,
+## ✨ Funcionalidades Implementadas
 
-      // Other configs...
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-])
-```
+- 🎬 **Destaques Dinâmicos** — Slideshow automático com os 5 jogos principais da semana.
+- 🔍 **Busca Otimizada** — Sistema de busca com *debounce* para reduzir requisições desnecessárias.
+- 🏷️ **Filtros e Ordenação** — Navegação por gêneros e ordenação por preço, avaliação ou lançamento.
+- 💰 **Lógica de Preços** — Algoritmo para geração de preços e descontos baseados nos metadados da API.
+- 🛒 **Carrinho Persistente** — Gerenciamento completo de itens com persistência via `localStorage`.
+- 📄 **Páginas de Detalhes** — Visualização de requisitos do sistema, screenshots e descrições.
+- 💀 **User Experience** — Uso de *Skeleton Loaders* para evitar o efeito de "layout shift" durante o carregamento.
 
-You can also install [eslint-plugin-react-x](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-x) and [eslint-plugin-react-dom](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-dom) for React-specific lint rules:
+---
 
-```js
-// eslint.config.js
-import reactX from 'eslint-plugin-react-x'
-import reactDom from 'eslint-plugin-react-dom'
+## 🛠️ Tecnologias Utilizadas
 
-export default defineConfig([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
-      // Enable lint rules for React
-      reactX.configs['recommended-typescript'],
-      // Enable lint rules for React DOM
-      reactDom.configs.recommended,
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-])
-```
-# PixelStore
+- **Core:** React 19 & TypeScript 5
+- **Tooling:** Vite, ESLint
+- **Navegação:** React Router DOM 7
+- **Estilização:** CSS Modules / Global CSS
+- **API:** Axios & RAWG Database
+- **Estado:** React Context API
+
+---
+
+## 📁 Estrutura de Pastas
+
+```text
+src/
+├── components/         # Componentes reutilizáveis (Navbar, Sidebar, Banner)
+├── context/            # Gerenciamento de estado do carrinho
+├── pages/              # Páginas da aplicação (Home, Cart, GameDetail)
+├── services/           # Configuração do Axios e helpers da API
+└── assets/             # Estilos globais e recursos estáticos
+
+Como executar o projeto
+Clone o repositório:
+
+Bash
+git clone [https://github.com/g4bri3llucas/pixelstore.git](https://github.com/g4bri3llucas/pixelstore.git)
+cd pixelstore
+Instale as dependências:
+
+Bash
+npm install
+Configure a API Key:
+Crie um arquivo .env na raiz do projeto e adicione sua chave da RAWG:
+
+Snippet de código
+VITE_API_KEY=sua_chave_aqui
+Inicie o servidor de desenvolvimento:
+
+Bash
+npm run dev
+🗺️ Roadmap de Evolução
+[ ] Implementação de autenticação de usuário
+
+[ ] Sistema de Wishlist (Lista de Desejos)
+
+[ ] Checkout simulado
+
+[ ] Finalização da migração total para TypeScript
+
+[ ] Testes unitários com Vitest
+
+👤 Autor
+Desenvolvido por Gabriel Lucas
