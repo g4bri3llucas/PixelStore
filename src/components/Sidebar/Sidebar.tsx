@@ -1,4 +1,4 @@
-import { FiGrid, FiTag, FiGift, FiMonitor, FiSmartphone, FiChevronRight, FiTv } from "react-icons/fi";
+import { FiGrid, FiTag, FiGift, FiMonitor, FiSmartphone, FiChevronRight } from "react-icons/fi";
 import { BsNintendoSwitch, BsPlaystation, BsXbox } from "react-icons/bs";
 import "./Sidebar.css";
 

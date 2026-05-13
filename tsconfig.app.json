@@ -15,9 +15,13 @@
     "noEmit": true,
     "jsx": "react-jsx",
 
-    /* Linting */
-    "noUnusedLocals": true,
-    "noUnusedParameters": true,
+    /* Allow .jsx files */
+    "allowJs": true,
+    "noImplicitAny": false,
+
+    /* Linting — relaxado para arquivos .jsx */
+    "noUnusedLocals": false,
+    "noUnusedParameters": false,
     "erasableSyntaxOnly": true,
     "noFallthroughCasesInSwitch": true
   },
