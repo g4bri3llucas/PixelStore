@@ -43,6 +43,12 @@ export const generateDiscount = (game: RawgGame): number | null => {
   return null;
 };
 
+/** Retorna true se o jogo tem conteúdo adulto/sensível */
+export const isMatureContent = (game: RawgGame): boolean => {
+  const rating = game.esrb_rating?.name?.toLowerCase() ?? "";
+  return ["adults only", "mature"].some((k) => rating.includes(k));
+};
+
 // ── Endpoints ─────────────────────────────────────────
 
 export const getGames = async (params?: {

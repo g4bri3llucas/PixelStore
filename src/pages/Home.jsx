@@ -23,7 +23,6 @@ function Home() {
   const [page, setPage] = useState(1);
   const [loadingMore, setLoadingMore] = useState(false);
 
-  // Busca gêneros uma vez
   useEffect(() => {
     getGenres().then(setGenres).catch(() => {});
   }, []);
@@ -55,6 +54,10 @@ function Home() {
           rating: g.rating,
           discount,
           isNew: releaseYear >= currentYear - 1,
+          isMature:
+            g.esrb_rating?.name?.toLowerCase().includes("mature") ||
+            g.esrb_rating?.name?.toLowerCase().includes("adults only") ||
+            false,
         };
       });
 
@@ -77,12 +80,12 @@ function Home() {
     fetchGames(true);
   }, [activeGenre, activeOrdering]); // eslint-disable-line
 
-  const bannerGames = games.filter((g) => g.image).slice(0, 5);
+  const bannerGames = games.filter((g) => g.image && !g.isMature).slice(0, 5);
   const onSaleGames = games.filter((g) => g.discount);
 
   return (
     <div className="home">
-      {/* Banner */}
+      {/* Banner — nunca exibe conteúdo mature */}
       {loading
         ? <div className="banner-skeleton" />
         : <Banner games={bannerGames} />
@@ -144,6 +147,7 @@ function Home() {
                 game={game}
                 discount={game.discount}
                 isNew={game.isNew}
+                isMature={game.isMature}
                 delay={i * 60}
               />
             ))}
@@ -180,6 +184,7 @@ function Home() {
                   game={game}
                   discount={game.discount}
                   isNew={game.isNew}
+                  isMature={game.isMature}
                   delay={i * 40}
                 />
               ))}

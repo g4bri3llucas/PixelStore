@@ -217,3 +217,35 @@
   border-color: rgba(0,200,83,0.3);
   color: var(--green);
 }
+
+.game-card__quick-btn.adding {
+  background: var(--accent-dim);
+  border: 1px solid var(--accent);
+  color: var(--accent-light);
+  cursor: not-allowed;
+  transform: none;
+}
+
+.game-card__cart-btn.adding {
+  cursor: not-allowed;
+  background: var(--accent-dim);
+  border-color: var(--accent);
+  color: var(--accent-light);
+}
+
+/* Spinner */
+.game-card__spinner {
+  display: inline-block;
+  width: 15px;
+  height: 15px;
+  border: 2px solid rgba(255,255,255,0.3);
+  border-top-color: #fff;
+  border-radius: 50%;
+  animation: spin 0.6s linear infinite;
+  flex-shrink: 0;
+}
+
+.game-card__spinner--sm {
+  width: 13px;
+  height: 13px;
+}

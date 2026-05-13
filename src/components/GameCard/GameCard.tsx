@@ -1,3 +1,4 @@
+import { useState } from "react";
 import { Link } from "react-router-dom";
 import { FiShoppingCart, FiCheck, FiMonitor } from "react-icons/fi";
 import { useCart } from "../../context/CartContext";
@@ -14,6 +15,7 @@ interface GameCardProps {
 const GameCard = ({ game, discount, isNew, delay = 0 }: GameCardProps) => {
   const { addToCart, isInCart } = useCart();
   const inCart = isInCart(game.id);
+  const [adding, setAdding] = useState(false);
 
   const finalPrice = discount
     ? Math.round(game.price * (1 - discount / 100))
@@ -25,7 +27,13 @@ const GameCard = ({ game, discount, isNew, delay = 0 }: GameCardProps) => {
   const handleAddToCart = (e: React.MouseEvent) => {
     e.preventDefault();
     e.stopPropagation();
-    addToCart(game);
+    if (inCart || adding) return;
+
+    setAdding(true);
+    setTimeout(() => {
+      addToCart(game);
+      setAdding(false);
+    }, 600);
   };
 
   return (
@@ -39,19 +47,29 @@ const GameCard = ({ game, discount, isNew, delay = 0 }: GameCardProps) => {
           alt={game.title}
           loading="lazy"
         />
+
         {discount && (
           <span className="game-card__discount">-{discount}%</span>
         )}
         {isNew && (
           <span className="game-card__new-badge">Novo</span>
         )}
+
+        {/* Quick add overlay */}
         <div className="game-card__quick-add">
           <button
-            className={`game-card__quick-btn ${inCart ? "in-cart" : ""}`}
+            className={`game-card__quick-btn ${inCart ? "in-cart" : ""} ${adding ? "adding" : ""}`}
             onClick={handleAddToCart}
+            disabled={adding}
           >
-            {inCart ? <FiCheck size={15} /> : <FiShoppingCart size={15} />}
-            {inCart ? "Adicionado!" : "Adicionar"}
+            {adding ? (
+              <span className="game-card__spinner" />
+            ) : inCart ? (
+              <FiCheck size={15} />
+            ) : (
+              <FiShoppingCart size={15} />
+            )}
+            {adding ? "Adicionando..." : inCart ? "Adicionado!" : "Adicionar"}
           </button>
         </div>
       </Link>
@@ -86,11 +104,17 @@ const GameCard = ({ game, discount, isNew, delay = 0 }: GameCardProps) => {
           </span>
         </div>
         <button
-          className={`game-card__cart-btn ${inCart ? "in-cart" : ""}`}
+          className={`game-card__cart-btn ${inCart ? "in-cart" : ""} ${adding ? "adding" : ""}`}
           onClick={handleAddToCart}
+          disabled={adding}
           aria-label={inCart ? "No carrinho" : "Adicionar ao carrinho"}
         >
-          {inCart ? <FiCheck size={15} /> : <FiShoppingCart size={15} />}
+          {adding
+            ? <span className="game-card__spinner game-card__spinner--sm" />
+            : inCart
+            ? <FiCheck size={15} />
+            : <FiShoppingCart size={15} />
+          }
         </button>
       </div>
 

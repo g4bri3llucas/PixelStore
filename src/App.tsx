@@ -5,6 +5,7 @@ import Navbar from "./components/Navbar/Navbar";
 import Sidebar from "./components/Sidebar/Sidebar";
 import Home from "./pages/Home";
 import GameDetail from "./pages/GameDetail";
+import Cart from "./pages/Cart";
 import "./App.css";
 
 function App() {
@@ -20,6 +21,7 @@ function App() {
           <Routes>
             <Route path="/" element={<Home />} />
             <Route path="/game/:id" element={<GameDetail />} />
+            <Route path="/cart" element={<Cart />} />
           </Routes>
         </main>
       </div>
