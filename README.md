@@ -7,7 +7,7 @@
 [![Vite](https://img.shields.io/badge/Vite-6-646cff?style=flat-square&logo=vite)](https://vitejs.dev)
 [![RAWG API](https://img.shields.io/badge/API-RAWG-f4901e?style=flat-square)](https://rawg.io/apidocs)
 
-🔗 **Demo online:** [https://pixelstore-oh7wqhb3w-g4bri3llucas-projects.vercel.app]
+<!-- 🔗 **Demo online:** adicione aqui o link de produção da Vercel -->
 
 ---
 
@@ -44,10 +44,10 @@ A **PixelStore** é um front-end de e-commerce de jogos digitais que consome dad
 - **Core:** React 19 e TypeScript 5
 - **Build e qualidade:** Vite, ESLint
 - **Navegação:** React Router DOM 7
-- **Estilização:** CSS Modules e CSS global
+- **Estilização:** CSS por componente e CSS global
 - **API:** Axios e RAWG Database
 - **Estado:** React Context API
-- **Testes (em configuração):** Vitest e Testing Library
+- **Testes:** Vitest e Testing Library (serviço da API e carrinho)
 
 ---
 
@@ -59,7 +59,7 @@ src/
 ├── context/      # Gerenciamento de estado do carrinho
 ├── pages/        # Páginas da aplicação (Home, Cart, GameDetail)
 ├── services/     # Configuração do Axios e helpers da API
-├── tests/        # Configuração do ambiente de testes
+├── tests/        # Testes do serviço da API e do carrinho
 └── assets/       # Estilos globais e recursos estáticos
 ```
 
@@ -98,6 +98,12 @@ VITE_API_KEY=sua_chave_aqui
 npm run dev
 ```
 
+5. Rode os testes:
+
+```bash
+npm run test:run
+```
+
 ---
 
 ## 🗺️ Roadmap
@@ -105,13 +111,13 @@ npm run dev
 - [ ] Autenticação de usuário
 - [ ] Wishlist (lista de desejos)
 - [ ] Checkout simulado
-- [ ] Finalizar a migração total para TypeScript
-- [ ] Testes unitários com Vitest (ambiente já configurado)
+- [ ] Finalizar a migração para TypeScript (faltam `Home` e `Cart`)
+- [ ] Testes de componentes (páginas e carrinho na interface)
 
 ---
 
 ## 👤 Autor
 
-Desenvolvido por **Gabriel Lucas** · [GitHub](https://github.com/g4bri3llucas)
+Desenvolvido por **Gabriel Lucas** · [GitHub](https://github.com/g4bri3llucas) · [LinkedIn](https://www.linkedin.com/in/gabriel-lucas-893a342bb/)
 
 Dados de jogos fornecidos pela [RAWG](https://rawg.io).
