@@ -7,7 +7,7 @@
 [![Vite](https://img.shields.io/badge/Vite-6-646cff?style=flat-square&logo=vite)](https://vitejs.dev)
 [![RAWG API](https://img.shields.io/badge/API-RAWG-f4901e?style=flat-square)](https://rawg.io/apidocs)
 
-<!-- 🔗 **Demo online:** adicione aqui o link de produção da Vercel -->
+🔗 **Demo online:** [pixelstore-puce.vercel.app](https://pixelstore-puce.vercel.app)
 
 ---
 
